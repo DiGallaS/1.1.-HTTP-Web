@@ -2,6 +2,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -56,7 +57,7 @@ public class Server {
                 final var in = socket.getInputStream();
                 final var out = new BufferedOutputStream(socket.getOutputStream());
         ) {
-            final var requestLine = Request.fromInputStream(in);
+            final var requestLine = Request.requestLine(in, out);
             final var paths = handlers.get(requestLine.getMethod());
             if (paths == null) {
                 notFound.handle(requestLine,out);
@@ -69,7 +70,7 @@ public class Server {
             }
             handler.handle(requestLine,out);
         }
-        catch (IOException e) {
+        catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
     }
