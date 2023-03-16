@@ -16,7 +16,7 @@ public class Main {
             try {
                 final var filePath = Path.of(".", "public", request.getPath());
                 final var mimeType = Files.probeContentType(filePath);
-                System.out.println("events.html: " + request.getPath());
+                System.out.println("/classic.html" + request.getPath());
                 final var template = Files.readString(filePath);
                 final var content = template.replace("{time}",
                                 LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss")))
